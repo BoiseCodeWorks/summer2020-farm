@@ -2,25 +2,46 @@
 
 let animals = [{
     name: "Cow",
-    sound: "Moo"
+    sound: "Moo",
+    img: "//placehold.it/200x200",
+    clip: "",
+    eaten: 0
 }, {
     name: "Sheep",
-    sound: "Baa"
+    sound: "Baa",
+    img: "//placehold.it/200x200",
+    clip: "",
+    eaten: 0
 }, {
     name: "Honey Badger",
-    sound: "Don\'t care"
+    sound: "Don\'t care",
+    img: "//placehold.it/200x200",
+    clip: "",
+    eaten: 0
 }, {
     name: "Duck",
-    sound: "AFLAK"
+    sound: "AFLAK",
+    img: "//placehold.it/200x200",
+    clip: "",
+    eaten: 0
 }, {
     name: "Lion",
-    sound: "Roar"
+    sound: "Roar",
+    img: "//placehold.it/200x200",
+    clip: "",
+    eaten: 0
 }, {
     name: "Wade",
-    sound: "CheeseBurger"
+    sound: "CheeseBurger",
+    img: "//placehold.it/200x200",
+    clip: "",
+    eaten: 0
 }, {
     name: "Goose",
-    sound: "I will murder your whole family"
+    sound: "I will murder your whole family",
+    img: "//placehold.it/200x200",
+    clip: "",
+    eaten: 0
 }]
 
 
@@ -33,22 +54,41 @@ let animals = [{
 //     document.getElementById("sound-text").innerText = "The cow says moo";
 // }
 
-function speak(name, sound) {
-    document.getElementById("sound-text").innerText = `The ${name} says ${sound}`;
+function speak(name) {
+    let animal = animals.find(a => a.name == name)
+    document.getElementById("sound-text").innerHTML = `
+    <img src="${animal.img}" /> 
+    <h3>The ${name} says ${animal.sound}<h3>
+    <p>It has eaten <span id="eaten-${name}">${animal.eaten}</span> times </p>
+    `;
 }
+
+function feed(name) {
+    let animal = animals.find(a => a.name == name)
+    animal.eaten++
+    let elem = document.getElementById(`eaten-${name}`)
+    // NOTE saftey check that the element exists before trying to manipulate it
+    if (elem) {
+        elem.innerText = animal.eaten.toString();
+    }
+}
+
 
 // NOTE we will use the "draw" methods for updating the screen
 function drawButtons() {
-    let template = ''
+    let speakTemplate = ''
+    let feedTemplate = ''
     // itterate over the animals
     for (let i = 0; i < animals.length; i++) {
         const animal = animals[i];
         // for each of the animals create a button
         // NOTE if you dont add the '' around the strings injected as parameters they will be treated as variables and have unexpected results
-        template += `<button class="btn btn-primary" onclick="speak('${animal.name}', '${animal.sound}')">${animal.name}</button>`
+        speakTemplate += `<button class="btn btn-primary" onclick="speak('${animal.name}')">${animal.name}</button>`
+        feedTemplate += `<button class="btn btn-info" onclick="feed('${animal.name}')">${animal.name}</button>`
     }
     //add the buttons to the page
-    document.getElementById("animal-buttons").innerHTML = template;
+    document.getElementById("animal-buttons").innerHTML = speakTemplate;
+    document.getElementById("animal-feed-buttons").innerHTML = feedTemplate;
 }
 
 drawButtons();
